@@ -68,7 +68,8 @@ else:
 # Crear gráficos adicionales según sea necesario
 # Ejemplo: Gráfico de barras apiladas para Conocimiento, Desempeño y Producto por Nivel
 if not filtered_data.empty:
-    grouped_data = filtered_data.groupby('NIVEL').mean()
+    numeric_columns = ['CONOCIMIENTO', 'DESEMPEÑO', 'PRODUCTO']
+    grouped_data = filtered_data.groupby('NIVEL')[numeric_columns].mean()
     fig2 = go.Figure(data=[
         go.Bar(name='CONOCIMIENTO', x=grouped_data.index, y=grouped_data['CONOCIMIENTO']),
         go.Bar(name='DESEMPEÑO', x=grouped_data.index, y=grouped_data['DESEMPEÑO']),
