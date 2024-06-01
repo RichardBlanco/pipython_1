@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 st.write("Simulador Cesde")
 
 # Cargar los datos
-df = pd.read_csv('/mnt/data/data.csv')
+df = pd.read_csv('/static/datasets/data.csv')
 
 # Obtener las opciones únicas de cada filtro
 gruposU = sorted(df['GRUPO'].unique())
