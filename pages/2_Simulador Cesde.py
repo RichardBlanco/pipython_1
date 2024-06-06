@@ -21,7 +21,7 @@ docentesU = sorted(df['DOCENTE'].unique())
 momentosU = sorted(df['MOMENTO'].unique())
 
 # Configurar las columnas y selectores
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
     gruposU.insert(0,"Todos")
@@ -37,6 +37,9 @@ with col3:
 with col4:
     jornadasU.insert(0, "Todos")
     optionJornada = st.selectbox('Jornada', (jornadasU))
+
+with col5:
+    optionGraficoTorta = st.selectbox('Gráfico de Torta', ['Grupo-Nivel', 'Grupo-Jornada'])
 
 # Filtrar los datos según las opciones seleccionadas
 filtered_data = df
@@ -65,15 +68,13 @@ if not filtered_data.empty:
 else:
     st.write("No hay datos disponibles para los filtros seleccionados.")
 
-# Crear gráficos adicionales según sea necesario
-# Ejemplo: Gráfico de barras apiladas para Conocimiento, Desempeño y Producto por Nivel
-if not filtered_data.empty:
-    numeric_columns = ['CONOCIMIENTO', 'DESEMPEÑO', 'PRODUCTO']
-    grouped_data = filtered_data.groupby('NIVEL')[numeric_columns].mean()
-    fig2 = go.Figure(data=[
-        go.Bar(name='CONOCIMIENTO', x=grouped_data.index, y=grouped_data['CONOCIMIENTO']),
-        go.Bar(name='DESEMPEÑO', x=grouped_data.index, y=grouped_data['DESEMPEÑO']),
-        go.Bar(name='PRODUCTO', x=grouped_data.index, y=grouped_data['PRODUCTO'])
-    ])
-    fig2.update_layout(barmode='stack')
-    st.plotly_chart(fig2, use_container_width=True)
+# Crear el gráfico de torta
+if optionGraficoTorta == 'Grupo-Nivel' and not filtered_data.empty:
+    pie_data = filtered_data.groupby(['GRUPO', 'NIVEL']).size().reset_index(name='counts')
+    fig_pie = go.Figure(data=[go.Pie(labels=pie_data.apply(lambda row: f"{row['GRUPO']} - {row['NIVEL']}", axis=1), values=pie_data['counts'])])
+    st.plotly_chart(fig_pie, use_container_width=True)
+
+elif optionGraficoTorta == 'Grupo-Jornada' and not filtered_data.empty:
+    pie_data = filtered_data.groupby(['GRUPO', 'JORNADA']).size().reset_index(name='counts')
+    fig_pie = go.Figure(data=[go.Pie(labels=pie_data.apply(lambda row: f"{row['GRUPO']} - {row['JORNADA']}", axis=1), values=pie_data['counts'])])
+    st.plotly_chart(fig_pie, use_container_width=True)
