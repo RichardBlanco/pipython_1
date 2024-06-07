@@ -7,6 +7,7 @@ st.title("Administración del Restaurante")
 # Especificar la ruta del archivo CSV
 file_path = 'static/datasets/Restaurante.csv'
 
+# Intentar leer el archivo CSV con diferentes encodings
 try:
     df = pd.read_csv(file_path, encoding='utf-8', sep=';')
 except UnicodeDecodeError:
@@ -18,12 +19,16 @@ st.write("Nombres de las columnas:", df.columns.tolist())
 # Asegurarse de que los nombres de las columnas no tengan espacios al principio o al final
 df.columns = df.columns.str.strip()
 
-# Convertir la columna 'Fecha' a datetime
-try:
-    df['Fecha'] = pd.to_datetime(df['Fecha'], format='%d/%m/%Y')
-except KeyError:
+# Verificar si la columna 'Fecha' existe en el DataFrame
+if 'Fecha' not in df.columns:
     st.error("La columna 'Fecha' no se encontró en el archivo de datos. Asegúrate de que el archivo CSV tenga la columna 'Fecha'.")
     st.stop()
+
+# Convertir la columna 'Fecha' a datetime
+df['Fecha'] = pd.to_datetime(df['Fecha'], format='%d/%m/%Y', errors='coerce')
+
+# Filtrar las filas con fechas no convertibles
+df = df.dropna(subset=['Fecha'])
 
 # Obtener las opciones únicas de cada filtro
 productosU = sorted(df['Producto'].unique())
