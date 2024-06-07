@@ -6,7 +6,7 @@ st.title("Administración del Restaurante")
 
 # Cargar los datos
 try:
-    df = pd.read_csv('../static/datasets/Restaurante.csv')
+    df = pd.read_csv('static/datasets/Restaurante.csv')
 except FileNotFoundError:
     st.error("El archivo de datos no se encontró. Asegúrate de que el archivo esté en la ruta correcta.")
     st.stop()
