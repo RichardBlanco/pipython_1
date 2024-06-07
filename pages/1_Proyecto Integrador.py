@@ -13,9 +13,6 @@ try:
 except UnicodeDecodeError:
     df = pd.read_csv(file_path, encoding='latin1', sep=';')
 
-# Mostrar los nombres de las columnas para depuración
-st.write("Nombres de las columnas:", df.columns.tolist())
-
 # Asegurarse de que los nombres de las columnas no tengan espacios al principio o al final
 df.columns = df.columns.str.strip()
 
