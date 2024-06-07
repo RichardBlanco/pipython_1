@@ -4,12 +4,11 @@ import plotly.express as px
 
 st.title("Administración del Restaurante")
 
-# Cargar los datos
+# Cargar los datos con manejo de errores de codificación
 try:
-    df = pd.read_csv('static/datasets/Restaurante.csv')
-except FileNotFoundError:
-    st.error("El archivo de datos no se encontró. Asegúrate de que el archivo esté en la ruta correcta.")
-    st.stop()
+    df = pd.read_csv('static/datasets/Restaurante.csv', encoding='utf-8')
+except UnicodeDecodeError:
+    df = pd.read_csv('static/datasets/Restaurante.csv', encoding='latin1')
 
 # Convertir la columna 'Fecha' a datetime
 df['Fecha'] = pd.to_datetime(df['Fecha'], format='%Y-%m-%d')
