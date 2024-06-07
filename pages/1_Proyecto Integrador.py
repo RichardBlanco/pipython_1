@@ -4,11 +4,13 @@ import plotly.express as px
 
 st.title("Administración del Restaurante")
 
-# Cargar los datos con manejo de errores de codificación
+# Especificar la ruta del archivo CSV
+file_path = 'static/datasets/Restaurante.csv'
+
 try:
-    df = pd.read_csv('static/datasets/Restaurante.csv', encoding='utf-8')
+    df = pd.read_csv(file_path, encoding='utf-8', sep=';')
 except UnicodeDecodeError:
-    df = pd.read_csv('static/datasets/Restaurante.csv', encoding='latin1')
+    df = pd.read_csv(file_path, encoding='latin1', sep=';')
 
 # Mostrar los nombres de las columnas para depuración
 st.write("Nombres de las columnas:", df.columns.tolist())
@@ -18,7 +20,7 @@ df.columns = df.columns.str.strip()
 
 # Convertir la columna 'Fecha' a datetime
 try:
-    df['Fecha'] = pd.to_datetime(df['Fecha'], format='%Y-%m-%d')
+    df['Fecha'] = pd.to_datetime(df['Fecha'], format='%d/%m/%Y')
 except KeyError:
     st.error("La columna 'Fecha' no se encontró en el archivo de datos. Asegúrate de que el archivo CSV tenga la columna 'Fecha'.")
     st.stop()
