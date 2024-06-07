@@ -6,12 +6,22 @@ st.title("Administración del Restaurante")
 
 # Cargar los datos con manejo de errores de codificación
 try:
-    df = pd.read_csv('static/datasets/Restaurante.csv', encoding='utf-8')
+    df = pd.read_csv('/mnt/data/Restaurante.csv', encoding='utf-8')
 except UnicodeDecodeError:
-    df = pd.read_csv('static/datasets/Restaurante.csv', encoding='latin1')
+    df = pd.read_csv('/mnt/data/Restaurante.csv', encoding='latin1')
+
+# Mostrar los nombres de las columnas para depuración
+st.write("Nombres de las columnas:", df.columns.tolist())
+
+# Asegurarse de que los nombres de las columnas no tengan espacios al principio o al final
+df.columns = df.columns.str.strip()
 
 # Convertir la columna 'Fecha' a datetime
-df['Fecha'] = pd.to_datetime(df['Fecha'], format='%Y-%m-%d')
+try:
+    df['Fecha'] = pd.to_datetime(df['Fecha'], format='%Y-%m-%d')
+except KeyError:
+    st.error("La columna 'Fecha' no se encontró en el archivo de datos. Asegúrate de que el archivo CSV tenga la columna 'Fecha'.")
+    st.stop()
 
 # Obtener las opciones únicas de cada filtro
 productosU = sorted(df['Producto'].unique())
