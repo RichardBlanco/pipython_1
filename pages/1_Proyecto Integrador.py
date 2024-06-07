@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-st.title("Administración del Restaurante")
+st.title("Protecto Integrador - Ventas Restaurante")
 
 # Especificar la ruta del archivo CSV
 file_path = 'static/datasets/Restaurante.csv'
