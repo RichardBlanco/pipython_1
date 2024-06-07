@@ -6,9 +6,9 @@ st.title("Administración del Restaurante")
 
 # Cargar los datos con manejo de errores de codificación
 try:
-    df = pd.read_csv('/mnt/data/Restaurante.csv', encoding='utf-8')
+    df = pd.read_csv('static/datasets/Restaurante.csv', encoding='utf-8')
 except UnicodeDecodeError:
-    df = pd.read_csv('/mnt/data/Restaurante.csv', encoding='latin1')
+    df = pd.read_csv('static/datasets/Restaurante.csv', encoding='latin1')
 
 # Mostrar los nombres de las columnas para depuración
 st.write("Nombres de las columnas:", df.columns.tolist())
